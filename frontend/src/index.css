@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.ql-editor {
+  min-height: 180px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.ql-container {
+  border: none !important;
+}
+
+.ql-toolbar {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+}

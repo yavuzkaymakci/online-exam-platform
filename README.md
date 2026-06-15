@@ -73,46 +73,137 @@ backend
 
 ---
 
-# ⚙️ Installation
+# ⚙️ Kurulum Kılavuzu (Setup Guide)
 
-## 1️⃣ Clone Repository
+Bu proje bir **Node.js/Express backend**, bir **PostgreSQL veritabanı** ve bir **React (Vite) frontend**'den oluşur. Aşağıdaki adımları sırasıyla takip ederek projeyi local ortamınızda çalıştırabilirsiniz.
 
+## Gereksinimler (Prerequisites)
+
+* [Node.js](https://nodejs.org/) v18 veya üzeri (npm dahil)
+* [PostgreSQL](https://www.postgresql.org/download/) v13 veya üzeri
+* [Git](https://git-scm.com/)
+
+## 1️⃣ Projeyi Klonlayın
+
+```bash
+git clone https://github.com/yavuzkaymakci/online-exam-platform.git
+cd online-exam-platform
 ```
-git clone https://github.com/yourusername/online-exam-platform.git
+
+## 2️⃣ Veritabanını Oluşturun
+
+PostgreSQL kurulu olduğundan emin olun, ardından boş bir veritabanı oluşturun:
+
+```bash
+psql -U postgres -c "CREATE DATABASE online_exam;"
 ```
 
-## 2️⃣ Install Backend Dependencies
+Tabloları oluşturmak için repoda bulunan şema dosyasını çalıştırın:
 
+```bash
+psql -U postgres -d online_exam -f backend/database/schema.sql
 ```
+
+Bu komut şu tabloları oluşturur: `users`, `exams`, `questions`, `options`, `submissions`.
+
+## 3️⃣ Backend Kurulumu
+
+```bash
 cd backend
 npm install
 ```
 
-## 3️⃣ Setup Environment Variables
+### Ortam Değişkenlerini (.env) Ayarlayın
 
-Create `.env` file based on `.env.example`.
+`backend` klasöründe `.env.example` dosyasını kopyalayarak `.env` dosyası oluşturun:
+
+```bash
+# Windows (PowerShell)
+copy .env.example .env
+
+# macOS / Linux
+cp .env.example .env
+```
+
+Ardından `.env` içeriğini kendi PostgreSQL bilgilerinize göre düzenleyin:
 
 ```
 DB_USER=postgres
 DB_HOST=localhost
 DB_NAME=online_exam
-DB_PASSWORD=password
+DB_PASSWORD=postgres_sifreniz
 DB_PORT=5432
-JWT_SECRET=super_secret_key
+JWT_SECRET=cok_gizli_bir_anahtar_belirleyin
 PORT=5000
 ```
 
-## 4️⃣ Run Backend
+> ⚠️ `.env` dosyası `.gitignore` içinde olduğu için repoya gönderilmez. Her ortamda elle oluşturulması gerekir.
 
-```
-node server.js
+### Backend'i Çalıştırın
+
+```bash
+# Geliştirme modu (nodemon ile otomatik yeniden başlatma)
+npx nodemon index.js
+
+# veya normal mod
+node index.js
 ```
 
-Server will run on:
+Backend şu adreste çalışacaktır:
 
 ```
 http://localhost:5000
 ```
+
+Konsolda `Backend Sunucusu 5000 portunda çalışıyor...` mesajını görmelisiniz.
+
+## 4️⃣ Frontend Kurulumu
+
+Yeni bir terminal açın ve proje köküne dönün:
+
+```bash
+cd frontend
+npm install
+```
+
+### API Adresi
+
+Frontend, backend API'sine `frontend/src/api.js` içinde tanımlı şu adresten istek atar:
+
+```js
+const API_URL = "http://localhost:5000/api";
+```
+
+Backend'i farklı bir port/adreste çalıştırıyorsanız bu satırı güncelleyin.
+
+### Frontend'i Çalıştırın
+
+```bash
+npm run dev
+```
+
+Frontend (Vite) varsayılan olarak şu adreste çalışacaktır:
+
+```
+http://localhost:5173
+```
+
+## 5️⃣ Uygulamayı Kullanma
+
+1. Tarayıcıdan `http://localhost:5173` adresine gidin.
+2. Önce **eğitmen (instructor)** rolüyle bir hesap oluşturun (`/register` veya kayıt sayfası).
+3. Eğitmen olarak giriş yapıp bir sınav oluşturun; sistem otomatik bir **erişim kodu (access code)** üretecektir.
+4. Öğrenci rolüyle ayrı bir hesap oluşturun, bu kodu kullanarak sınava katılabilirsiniz.
+
+## Özet Komutlar
+
+| İşlem | Komut |
+|---|---|
+| Veritabanı şeması | `psql -U postgres -d online_exam -f backend/database/schema.sql` |
+| Backend bağımlılıkları | `cd backend && npm install` |
+| Backend çalıştır | `cd backend && node index.js` |
+| Frontend bağımlılıkları | `cd frontend && npm install` |
+| Frontend çalıştır | `cd frontend && npm run dev` |
 
 ---
 

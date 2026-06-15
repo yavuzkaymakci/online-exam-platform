@@ -70,6 +70,9 @@ export default function ExamIntro() {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><span className="loading loading-spinner text-[#0F2C59] loading-lg"></span></div>;
   if (!exam) return <div className="p-10 text-center text-error font-bold text-xl">Sınav Bulunamadı.</div>;
 
+  const violationLimit = exam.rules?.violation_limit ?? 1;
+  const wrongCancelsRight = !!exam.rules?.wrong_cancels_right;
+  const wrongCancelsRatio = Number(exam.rules?.wrong_cancels_ratio) === 3 ? 3 : 4;
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       
@@ -153,6 +156,9 @@ export default function ExamIntro() {
                     <div className="badge bg-white/20 text-white border-none p-4 gap-2">
                         📝 Tek Oturum
                     </div>
+                    <div className="badge bg-white/20 text-white border-none p-4 gap-2">
+                        ⚠️ {violationLimit} İhlal Hakkı
+                    </div>
                 </div>
             </div>
 
@@ -171,7 +177,10 @@ export default function ExamIntro() {
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="mt-1 text-[#D4AF37] font-bold">2.</span>
-                            <span>Sınav sırasında <strong>tam ekran modunda</strong> kalmanız gerekmektedir. Sekme değiştirmek ihlal sayılır.</span>
+                            <span>
+                            Sınav sırasında <strong>sekme değiştirmek ihlal sayılır</strong>. 
+                            İzin verilen toplam ihlal hakkınız <strong>{violationLimit}</strong> adettir.
+                            </span>                        
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="mt-1 text-[#D4AF37] font-bold">3.</span>
@@ -180,6 +189,20 @@ export default function ExamIntro() {
                         <li className="flex items-start gap-3">
                             <span className="mt-1 text-[#D4AF37] font-bold">4.</span>
                             <span>Sorular arasında geçiş yapabilirsiniz. "Sınavı Bitir" demeden cevaplarınız kesinleşmez.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="mt-1 text-[#D4AF37] font-bold">5.</span>
+                            <span>
+                                {wrongCancelsRight ? (
+                                <>
+                                    Bu sınavda <strong>{wrongCancelsRatio} yanlış 1 doğruyu götürmektedir</strong>.
+                                </>
+                                ) : (
+                                <>
+                                    Bu sınavda <strong>yanlış cevaplar doğru cevapları götürmez</strong>.
+                                </>
+                                )}
+                            </span>
                         </li>
                     </ul>
                 </div>

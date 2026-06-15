@@ -40,3 +40,73 @@
 .read-the-docs {
   color: #888;
 }
+
+.ql-editor {
+  min-height: 180px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.ql-container {
+  border: none !important;
+}
+
+.ql-toolbar {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+}
+
+.exam-rich-content p {
+  margin: 0 0 0.75rem 0;
+}
+
+.exam-rich-content p:last-child {
+  margin-bottom: 0;
+}
+
+.exam-rich-content ul,
+.exam-rich-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.exam-rich-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+@media print {
+  /* Modalın dışındaki her şeyi gizle */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Sadece pdf-content alanı ve içindekileri göster */
+  #pdf-content, #pdf-content * {
+    visibility: visible;
+  }
+
+  /* PDF içeriğini sayfanın en başına sabitle */
+  #pdf-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: white !important;
+  }
+
+  /* Yazdırma sırasında butonları gizle */
+  button, .btn, .modal-action {
+    display: none !important;
+  }
+
+  /* Sayfa bölünmelerini ayarla */
+  .break-inside-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
